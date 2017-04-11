@@ -89,6 +89,10 @@ a(ClassCooker::create()->setFile($f)->updateMethodContent("Core_webApplicationHa
 History Log
 ------------------
     
+- 1.4.0 -- 2017-04-11
+
+    - add getMethodSignature method
+    
 - 1.3.0 -- 2017-04-11
 
     - fix addMethod handles the case of an empty class

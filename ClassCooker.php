@@ -65,6 +65,19 @@ class ClassCooker
     }
 
 
+    public function getMethodSignature($methodName)
+    {
+        if (false !== ($content = $this->getMethodContent($methodName, true))) {
+            $pattern = '!^.*function\s+[a-zA-Z0-9_]+\s*\(.*\)\s*{!U';
+            if (preg_match($pattern, $content, $match)) {
+                $line = trim($match[0]);
+                $line = rtrim($line, '{');
+                return trim($line);
+            }
+        }
+        return false;
+    }
+
     /**
      * Adds a method to a class if it doesn't exist
      */
