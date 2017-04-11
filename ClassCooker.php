@@ -46,9 +46,9 @@ class ClassCooker
 
 
     /**
-     * Get the method content, including the signature and the wrapping curly brackets
+     * Get the method content, by default including the signature and the wrapping curly brackets
      */
-    public function getMethodContent($methodName)
+    public function getMethodContent($methodName, $includeWrap = true)
     {
         if (false !== ($boundaries = $this->getMethodBoundariesByName($methodName))) {
             list($startLine, $endLine) = $boundaries;
@@ -56,6 +56,9 @@ class ClassCooker
 
             $lines = $this->getLines();
             $slice = array_slice($lines, $startLine - 1, $endLine - $startLine + 1);
+            if (false === $includeWrap) {
+                return $this->getInnerContentByMethodSlice($slice);
+            }
             return implode("", $slice);
         }
         return false;
@@ -102,48 +105,29 @@ class ClassCooker
 
 
             $slice = array_slice($lines, $startLine - 1, $endLine - $startLine + 1);
-            $sliceCopy = $slice;
-            $firstLine = array_shift($sliceCopy);
-            $lastLine = array_pop($sliceCopy);
-            $originalFirstLine = $firstLine;
-            $originalLastLine = $lastLine;
-            $originalNextLine = "";
+            $wrappers = [];
+            $innerContent = $this->getInnerContentByMethodSlice($slice, $wrappers);
+
+            $originalFirstLine = $wrappers['first'];
+            $originalNextLine = $wrappers['next'];
+            $originalLastLine = $wrappers['last'];
 
 
-            if ('}' === trim($lastLine)) {
-                $firstLine = trim($firstLine);
-                $openBracketMode = 0;
-                if ('{' !== substr($firstLine, -1)) {
-                    $nextLine = array_shift($sliceCopy);
-                    $originalNextLine = $nextLine;
-                    $nextLine = trim($nextLine);
-                    $openBracketMode = 1;
-                    if ('{' !== $nextLine) {
-                        /**
-                         * A method opening bracket must be either at the end of the signature,
-                         * or on the next line alone on its line.
-                         */
-                        $this->error("Invalid class method formatting");
-                    }
-                }
-                $innerContent = implode('', $sliceCopy);
-                $newInnerContent = call_user_func($updator, $innerContent);
+            $newInnerContent = call_user_func($updator, $innerContent);
 
-                $sliceOneContent = implode("", $sliceOne);
-                $sliceTwoContent = implode("", $sliceTwo);
-                $content = $sliceOneContent
-                    . $originalFirstLine
-                    . $originalNextLine
-                    . $newInnerContent
-                    . $originalLastLine
-                    . $sliceTwoContent;
+            $sliceOneContent = implode("", $sliceOne);
+            $sliceTwoContent = implode("", $sliceTwo);
+            $content = $sliceOneContent
+                . $originalFirstLine
+                . $originalNextLine
+                . $newInnerContent
+                . $originalLastLine
+                . $sliceTwoContent;
 
 
-                return file_put_contents($this->file, $content);
+            return file_put_contents($this->file, $content);
 
-            } else {
-                $this->error("Invalid class formatting");
-            }
+
         }
         return false;
     }
@@ -336,5 +320,47 @@ class ClassCooker
             $this->error("Start line cannot be less than zero");
         }
         return false;
+    }
+
+
+    /**
+     * @param array $slice
+     * @param array $originalWrappers , will contain three keys: first, next, and last
+     * @return string
+     */
+    private function getInnerContentByMethodSlice(array $slice, array &$originalWrappers = [])
+    {
+        $innerContent = "";
+        $sliceCopy = $slice;
+        $firstLine = array_shift($sliceCopy);
+        $lastLine = array_pop($sliceCopy);
+        $originalFirstLine = $firstLine;
+        $originalLastLine = $lastLine;
+        $originalNextLine = "";
+
+
+        if ('}' === trim($lastLine)) {
+            $firstLine = trim($firstLine);
+            if ('{' !== substr($firstLine, -1)) {
+                $nextLine = array_shift($sliceCopy);
+                $originalNextLine = $nextLine;
+                $nextLine = trim($nextLine);
+                if ('{' !== $nextLine) {
+                    /**
+                     * A method opening bracket must be either at the end of the signature,
+                     * or on the next line alone on its line.
+                     */
+                    $this->error("Invalid class method formatting");
+                }
+            }
+            $innerContent = implode('', $sliceCopy);
+        } else {
+            $this->error("Invalid class formatting");
+        }
+        $originalWrappers["first"] = $originalFirstLine;
+        $originalWrappers["next"] = $originalNextLine;
+        $originalWrappers["last"] = $originalLastLine;
+
+        return $innerContent;
     }
 }
