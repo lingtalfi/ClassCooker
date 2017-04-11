@@ -213,6 +213,10 @@ class ClassCooker
         // first capture all method signatures, and all possible end brackets
         foreach ($lines as $line) {
             $line = trim($line);
+            if (0 === strpos($line, '//')) {
+                $lineNumber++;
+                continue;
+            }
             if (preg_match($captureFunctionNamePattern, $line, $match)) {
                 $func = $match[1];
                 $methods[] = [$func, $line, $lineNumber];
@@ -234,6 +238,7 @@ class ClassCooker
         if (count($endBrackets) >= $nbMethods) {
             foreach ($methods as $k => $info) {
                 $startLine = $info[2];
+
 
                 $tags = $this->getTagsByLine($info[1]);
 

@@ -89,6 +89,10 @@ a(ClassCooker::create()->setFile($f)->updateMethodContent("Core_webApplicationHa
 History Log
 ------------------
     
+- 1.2.0 -- 2017-04-11
+
+    - fix ignore commented methods
+    
 - 1.1.0 -- 2017-04-11
 
     - add includeWrap argument to getMethodContent
