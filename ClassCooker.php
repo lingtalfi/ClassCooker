@@ -71,20 +71,35 @@ class ClassCooker
     public function addMethod($methodName, $content)
     {
         $methods = $this->getMethodsBoundaries();
+        $nbMethod = count($methods);
         if (false === array_key_exists($methodName, $methods)) {
 
             $lines = $this->getLines();
 
-            $lastMethodInfo = array_pop($methods);
-            list($startLine, $endLine) = $lastMethodInfo;
+            if ($nbMethod > 0) {
 
-            $sliceOne = array_slice($lines, 0, $endLine);
-            $sliceTwo = array_slice($lines, $endLine);
+                $lastMethodInfo = array_pop($methods);
+                list($startLine, $endLine) = $lastMethodInfo;
+                $lineNumber = $endLine;
 
+            } else {
+                $nbLines = count($lines);
+                $index = $nbLines - 1;
 
+                while ($index >= 0) {
+                    $line = $lines[$index];
+                    if ('}' === trim($line)) {
+                        break;
+                    }
+                    $index--;
+                }
+                $lineNumber = $index;
+            }
+
+            $sliceOne = array_slice($lines, 0, $lineNumber);
+            $sliceTwo = array_slice($lines, $lineNumber);
             $sliceOneContent = implode("", $sliceOne);
             $sliceTwoContent = implode("", $sliceTwo);
-
             $c = $sliceOneContent . PHP_EOL . $content . $sliceTwoContent;
             return file_put_contents($this->file, $c);
         } else {
