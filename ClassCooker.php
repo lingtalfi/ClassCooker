@@ -23,7 +23,8 @@ class ClassCooker
     }
 
     /**
-     * Remove the given method from the class
+     * Remove the given method from the class,
+     * or does nothing if the method was not found
      */
     public function removeMethod($methodName)
     {
