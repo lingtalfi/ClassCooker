@@ -89,6 +89,10 @@ a(ClassCooker::create()->setFile($f)->updateMethodContent("Core_webApplicationHa
 History Log
 ------------------
     
+- 1.4.1 -- 2017-04-23
+
+    - fix getMethods returning commented methods
+    
 - 1.4.0 -- 2017-04-11
 
     - add getMethodSignature method

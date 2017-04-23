@@ -175,6 +175,9 @@ class ClassCooker
         // first capture all method signatures, and all possible end brackets
         foreach ($lines as $line) {
             $line = trim($line);
+            if (0 === strpos($line, '//')) {
+                continue;
+            }
             if (preg_match($captureFunctionNamePattern, $line, $match)) {
                 $func = $match[1];
                 $tags = $this->getTagsByLine($line);
