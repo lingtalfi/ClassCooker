@@ -10,6 +10,19 @@ class ClassCookerHelper
 {
 
 
+    public static function createSectionComment($label, $tabIndent=1)
+    {
+        $sp = str_repeat("\t", $tabIndent);
+        $s = <<<EEE
+$sp//--------------------------------------------
+$sp// $label
+$sp//--------------------------------------------
+EEE;
+
+
+        return $s;
+    }
+
     //--------------------------------------------
     // THIS IS A SECTION
     //--------------------------------------------
