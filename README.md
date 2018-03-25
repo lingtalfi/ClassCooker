@@ -89,6 +89,10 @@ a(ClassCooker::create()->setFile($f)->updateMethodContent("Core_webApplicationHa
 History Log
 ------------------
     
+- 1.6.0 -- 2018-03-25
+
+    - add ClassCookerHelper::getMethodsBoundaries method
+    
 - 1.5.0 -- 2018-03-25
 
     - add ClassCookerHelper class
