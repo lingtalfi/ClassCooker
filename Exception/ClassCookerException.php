@@ -1,7 +1,7 @@
 <?php
 
 
-namespace ClassCooker\Exception;
+namespace Ling\ClassCooker\Exception;
 
 
 class ClassCookerException extends \Exception

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace ClassCooker\Helper;
+namespace Ling\ClassCooker\Helper;
 
 
-use ClassCooker\Exception\ClassCookerException;
+use Ling\ClassCooker\Exception\ClassCookerException;
 
 class ClassCookerHelper
 {

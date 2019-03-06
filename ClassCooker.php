@@ -1,11 +1,11 @@
 <?php
 
 
-namespace ClassCooker;
+namespace Ling\ClassCooker;
 
 
-use ClassCooker\Exception\ClassCookerException;
-use ClassCooker\Helper\ClassCookerHelper;
+use Ling\ClassCooker\Exception\ClassCookerException;
+use Ling\ClassCooker\Helper\ClassCookerHelper;
 
 class ClassCooker
 {

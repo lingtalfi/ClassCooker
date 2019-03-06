@@ -13,7 +13,7 @@ Install
 ==========
 Using the [uni](https://github.com/lingtalfi/universe-naive-importer) command.
 ```bash
-uni import ClassCooker
+uni import Ling/ClassCooker
 ```
 
 Or just download it and place it where you want otherwise.
@@ -53,7 +53,7 @@ Straight from my working file.
 ```php
 <?php
 
-use ClassCooker\ClassCooker;
+use Ling\ClassCooker\ClassCooker;
 
 require_once __DIR__ . "/../boot.php";
 require_once __DIR__ . "/../init.php";
