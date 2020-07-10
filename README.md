@@ -1,6 +1,6 @@
 ClassCooker
 ===========
-2017-04-11
+2017-04-11 -> 2020-07-10
 
 
 A tool to add/remove/update methods in a class.
@@ -88,6 +88,10 @@ a(ClassCooker::create()->setFile($f)->updateMethodContent("Core_webApplicationHa
 
 History Log
 ------------------
+    
+- 1.8.0 -- 2020-07-10
+
+    - add ClassCooker->updatePropertyComment methods and some other methods
     
 - 1.7.0 -- 2018-03-25
 
