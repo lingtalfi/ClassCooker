@@ -22,6 +22,12 @@ Or just download it and place it where you want otherwise.
 
 
 
+Summary
+===========
+- [ClassCooker api](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker.md) (generated with [DocTools](https://github.com/lingtalfi/DocTools))
+
+
+
 
 
 

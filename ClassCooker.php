@@ -10,16 +10,36 @@ use Ling\ClassCooker\Exception\ClassCookerException;
 use Ling\ClassCooker\Helper\ClassCookerHelper;
 use Ling\TokenFun\TokenFinder\Tool\TokenFinderTool;
 
+/**
+ * The ClassCooker class.
+ */
 class ClassCooker
 {
 
+    /**
+     * Path to the file containing the class.
+     *
+     * @var string
+     */
     private $file;
 
+
+    /**
+     * Creates a new instance of this class, and returns it.
+     *
+     * @return static
+     */
     public static function create()
     {
         return new static();
     }
 
+    /**
+     * Sets the file to work with.
+     *
+     * @param $file
+     * @return $this
+     */
     public function setFile($file)
     {
         $this->file = $file;
@@ -242,7 +262,7 @@ class ClassCooker
      * - use Ling\Light_Logger\LightLoggerService;
      *
      *
-     * @param string|array $useStatement
+     * @param string|array $useStatements
      */
     public function addUseStatements($useStatements)
     {
@@ -284,7 +304,13 @@ class ClassCooker
 
 
     /**
-     * Get the method content, by default including the signature and the wrapping curly brackets
+     * Returns the method content, by default including the signature and the wrapping curly brackets.
+     *
+     *
+     * @param $methodName
+     * @param bool $includeWrap
+     * @return bool|string
+     * @throws ClassCookerException
      */
     public function getMethodContent($methodName, $includeWrap = true)
     {
@@ -303,6 +329,13 @@ class ClassCooker
     }
 
 
+    /**
+     * Returns the given method' signature, or false if the method doesn't exist.
+     *
+     * @param $methodName
+     * @return bool|string
+     * @throws \Exception
+     */
     public function getMethodSignature($methodName)
     {
         if (false !== ($content = $this->getMethodContent($methodName, true))) {
@@ -329,7 +362,11 @@ class ClassCooker
 
 
     /**
-     * Get the method names
+     * Return an array of all the method signatures of the current class.
+     *
+     * @param array $signatureTags
+     * @return array
+     * @throws \Exception
      */
     public function getMethods(array $signatureTags = [])
     {
@@ -364,9 +401,13 @@ class ClassCooker
 
     /**
      * Get the boundaries for a given method.
+     *
      * See getMethodsBoundaries for more info.
+     *
+     * @param string $methodName
+     * @return bool|mixed
      */
-    public function getMethodBoundariesByName($methodName)
+    public function getMethodBoundariesByName(string $methodName)
     {
         $boundaries = $this->getMethodsBoundaries();
         if (array_key_exists($methodName, $boundaries)) {
@@ -377,24 +418,10 @@ class ClassCooker
 
 
     /**
-     * This method will get the startLine and endLine number of every methods it finds.
-     * However, in order for this method to work correctly, the class needs to be formatted in a certain way:
-     *
-     * - there must be only one class in the file
-     * - the class ends with a proper } (end curly bracket) on its own line (possibly surrounded with whitespaces)
-     * - the method signature is on its own line, and only one line (not split in multiple lines)
-     * - a method ends with a proper } (end curly bracket) on its own line (possibly surrounded with whitespaces)
-     *
-     *
-     * $signatureTags: array of desired tags, a tag can be one of the following:
-     *                      - public
-     *                      - protected
-     *                      - private
-     *                      - static
-     *
-     *
-     *
-     * @return array of method => [startLine, endLine]
+     * Proxy to the @page(ClassCookerHelper::getMethodsBoundaries) method.
+     * @param array $signatureTags
+     * @return array
+     * @throws \Exception
      */
     public function getMethodsBoundaries(array $signatureTags = [])
     {
@@ -484,7 +511,7 @@ class ClassCooker
      * @return int
      * @throws \Exception
      */
-    public function getClassStartLine()
+    public function getClassStartLine(): int
     {
         $r = new \ReflectionClass($this->getClassName());
         return $r->getStartLine();
@@ -582,9 +609,13 @@ class ClassCooker
 
     /**
      * Remove the given method from the class,
-     * or does nothing if the method was not found
+     * or does nothing and returns false if the method was not found.
+     *
+     * @param string $methodName
+     * @return false|int
+     * @throws \Exception
      */
-    public function removeMethod($methodName)
+    public function removeMethod(string $methodName)
     {
         if (false !== ($boundaries = $this->getMethodBoundariesByName($methodName))) {
             list($startLine, $endLine) = $boundaries;
@@ -603,7 +634,22 @@ class ClassCooker
     }
 
 
-    public function updateMethodContent($methodName, callable $updator)
+    /**
+     * Updates the inner content of a method, using a callable.
+     *
+     * The callable signature is:
+     * - fn ( string innerContent ): string
+     *
+     * It returns the updated method content.
+     *
+     *
+     *
+     * @param string $methodName
+     * @param callable $updator
+     * @return false|int
+     * @throws \Exception
+     */
+    public function updateMethodContent(string $methodName, callable $updator)
     {
         if (false !== ($boundaries = $this->getMethodBoundariesByName($methodName))) {
             list($startLine, $endLine) = $boundaries;
@@ -667,6 +713,7 @@ class ClassCooker
      *
      *
      * @param string $propertyName
+     * @param array $options
      * @param callable $fn
      */
     public function updatePropertyComment(string $propertyName, callable $fn, array $options = [])
@@ -703,6 +750,12 @@ class ClassCooker
     //--------------------------------------------
     //
     //--------------------------------------------
+    /**
+     * Throws an exception.
+     *
+     * @param $msg
+     * @throws ClassCookerException
+     */
     protected function error($msg)
     {
         throw new ClassCookerException($msg);
@@ -712,6 +765,12 @@ class ClassCooker
     //--------------------------------------------
     //
     //--------------------------------------------
+    /**
+     * Returns an array containing the lines of the class file.
+     *
+     * @return array|false
+     * @throws ClassCookerException
+     */
     private function getLines()
     {
         if (file_exists($this->file)) {
@@ -721,7 +780,13 @@ class ClassCooker
     }
 
 
-    private function getTagsByLine($line)
+    /**
+     * Returns the tags found in the given line.
+     *
+     * @param string $line
+     * @return array
+     */
+    private function getTagsByLine(string $line): array
     {
         $p = explode('function', $line, 2);
         $tags = explode(' ', $p[0]);
@@ -732,6 +797,15 @@ class ClassCooker
         return $tags;
     }
 
+
+    /**
+     * Checks that the boundaries are safe to work with, and throws an exception if that's not the case.
+     *
+     * @param $startLine
+     * @param $endLine
+     * @return bool
+     * @throws \Exception
+     */
     private function checkBoundaries($startLine, $endLine)
     {
         if ($startLine > 0) {
@@ -751,11 +825,13 @@ class ClassCooker
 
 
     /**
+     * Returns the inner content of a method by using a slice.
+     *
      * @param array $slice
      * @param array $originalWrappers , will contain three keys: first, next, and last
      * @return string
      */
-    private function getInnerContentByMethodSlice(array $slice, array &$originalWrappers = [])
+    private function getInnerContentByMethodSlice(array $slice, array &$originalWrappers = []): string
     {
         $innerContent = "";
         $sliceCopy = $slice;
