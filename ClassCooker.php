@@ -30,48 +30,206 @@ class ClassCooker
     //--------------------------------------------
     //
     //--------------------------------------------
+    /**
+     * Adds a string to the class.
+     * The string can be any string that fits in a class: a method, multiple methods, a property, some comments, etc...
+     *
+     * By default, the string is appended at the end of the class.
+     * You can define the location where you want to add the string with the options.
+     *
+     *
+     * Available options are:
+     * - afterMethod: string, the method after which to append the string
+     * - beforeMethod: string, the method before which to append the string
+     * - afterProperty: string, the property after which to append the string
+     * - beforeProperty: string, the property before which to append the string
+     * - classStart: bool=false, the string will be appended at the beginning of the class
+     *
+     *
+     * Note: in most of the cases, you want the content to end up with the PHP_EOL char,
+     * otherwise this might lead to unexpected/weird results.
+     *
+     *
+     *
+     * @param string $content
+     * @param array $options
+     */
+    public function addContent(string $content, array $options = [])
+    {
+
+        $insertLine = null;
+        if (array_key_exists("afterMethod", $options)) {
+            $method = $options['afterMethod'];
+            $methods = $this->getMethodsBasicInfo();
+            if (false === array_key_exists($method, $methods)) {
+                $this->error("The method \"$method\" was not found in this class.");
+            }
+            $methodInfo = $methods[$method];
+            $insertLine = $methodInfo['endLine'] + 1;
+        } elseif (array_key_exists("beforeMethod", $options)) {
+            $method = $options['beforeMethod'];
+            $methods = $this->getMethodsBasicInfo();
+            if (false === array_key_exists($method, $methods)) {
+                $this->error("The method \"$method\" was not found in this class.");
+            }
+            $methodInfo = $methods[$method];
+            $insertLine = $methodInfo['startLine'];
+        } elseif (array_key_exists("afterProperty", $options)) {
+            $property = $options['afterProperty'];
+            $properties = TokenFinderTool::getClassPropertyBasicInfo($this->getClassName());
+            if (false === array_key_exists($property, $properties)) {
+                $this->error("The property \"$property\" was not found in this class.");
+            }
+            $propertyInfo = $properties[$property];
+            $insertLine = $propertyInfo['endLine'] + 1;
+
+        } elseif (array_key_exists("beforeProperty", $options)) {
+            $property = $options['beforeProperty'];
+            $properties = TokenFinderTool::getClassPropertyBasicInfo($this->getClassName());
+            if (false === array_key_exists($property, $properties)) {
+                $this->error("The property \"$property\" was not found in this class.");
+            }
+            $propertyInfo = $properties[$property];
+            $startLine = $propertyInfo['commentStartLine'];
+            if (false === $startLine) {
+                $startLine = $propertyInfo['startLine'];
+            }
+            $insertLine = $startLine;
+
+        } elseif (array_key_exists("classStart", $options) && true === $options['classStart']) {
+            $properties = TokenFinderTool::getClassPropertyBasicInfo($this->getClassName());
+
+            if ($properties) { // insert before first property...
+
+                $firstProperty = array_shift($properties);
+                $startLine = $firstProperty['commentStartLine'];
+                if (false === $startLine) {
+                    $startLine = $firstProperty['startLine'];
+                }
+                $insertLine = $startLine;
+            } else {
+                $methods = $this->getMethodsBasicInfo();
+                if ($methods) // ...or else insert before first method...
+                {
+                    $methodInfo = array_shift($methods);
+                    $insertLine = $methodInfo['startLine'];
+                } else { // ...or else insert before the class end
+                    $lastInfo = $this->getClassLastLineInfo();
+                    $insertLine = $lastInfo['endLine'];
+                }
+            }
+        } else {
+            $lastInfo = $this->getClassLastLineInfo();
+            $insertLine = $lastInfo['endLine'];
+        }
+
+
+        FileTool::insert($insertLine, $content, $this->file);
+    }
 
     /**
-     * Adds a method to a class if it doesn't exist
+     * Adds the given method(s) to a class if it doesn't exist.
+     *
+     * By default, it's appended at the end of the class, but you can decide to put it after a given method, using
+     * the afterMethod option.
+     *
+     * By default if the method already exists, an exception will be thrown.
+     * You can change this behaviour using the throwEx option.
+     *
+     *
+     * Available options are:
+     * - afterMethod: string, the name of the method after which you wish to add the new method
+     * - throwEx: bool=true, whether to throw an exception if the given methodName already exists in the class.
+     *      If false and the method already exists, the method will return false.
+     *
+     *
+     *
+     *
+     * @param $methodName
+     * @param $content
+     * @param array $options
+     * @return false|void
+     * @throws \Exception
      */
     public function addMethod($methodName, $content, array $options = [])
     {
 
+        if (true === $this->hasMethod($methodName)) {
+            $throwEx = $options['throwEx'] ?? true;
+            if (true === $throwEx) {
+                $this->error("The method \"$methodName\" already exists in the class.");
+            }
+            return false;
+        }
+        $this->addContent($content, $options);
+    }
 
-        $methods = $this->getMethodsBoundaries();
-        $nbMethod = count($methods);
-        if (false === array_key_exists($methodName, $methods)) {
 
-            $lines = $this->getLines();
+    /**
+     *
+     * Adds a property to the current class.
+     *
+     * If the property already exists, an exception will be thrown.
+     * By default, the property is written below the last property if any.
+     * If not, it's written before the first method of the class if any.
+     * If not, it's added at the beginning of the class (just after the class declaration).
+     *
+     *
+     * But you can define a property as a target (using the afterProperty option), in which case
+     * we will write the new property immediately after that target.
+     *
+     *
+     * Available options are:
+     * - afterProperty: string, the name of the property to use as a target (the new property will be written after it)
+     *
+     *
+     *
+     *
+     * @param string $name
+     * @param string $content
+     * @param array $options
+     * @throws \Exception
+     */
+    public function addProperty(string $name, string $content, array $options = [])
+    {
 
-            if ($nbMethod > 0) {
+        $className = $this->getClassName();
+        $classProps = TokenFinderTool::getClassPropertyBasicInfo($className);
+        if (array_key_exists($name, $classProps)) {
+            $this->error("The property \"$name\" already exists in that class.");
+        }
 
-                $lastMethodInfo = array_pop($methods);
-                list($startLine, $endLine) = $lastMethodInfo;
-                $lineNumber = $endLine;
 
+        $classMethods = $this->getMethodsBasicInfo();
+        $classFirstEmptyLine = $this->getClassFirstEmptyLine();
+        $afterProperty = $options['afterProperty'] ?? null;
+
+        if (null === $afterProperty) {
+            if ($classProps) {
+                $lastProp = array_pop($classProps);
+                $number = $lastProp['endLine'] + 1;
+                FileTool::insert($number, $content, $this->file);
+            } elseif ($classMethods) {
+                $firstMethod = array_shift($classMethods);
+                $line = $firstMethod['startLine'];
+                FileTool::insert($line, $content, $this->file);
             } else {
-                $nbLines = count($lines);
-                $index = $nbLines - 1;
-
-                while ($index >= 0) {
-                    $line = $lines[$index];
-                    if ('}' === trim($line)) {
-                        break;
-                    }
-                    $index--;
+                $line = $classFirstEmptyLine;
+                if (false === $line) {
+                    $info = $this->getClassLastLineInfo();
+                    $line = $info['endLine'] - 1;
                 }
-                $lineNumber = $index;
+                FileTool::insert($line, $content, $this->file);
             }
 
-            $sliceOne = array_slice($lines, 0, $lineNumber);
-            $sliceTwo = array_slice($lines, $lineNumber);
-            $sliceOneContent = implode("", $sliceOne);
-            $sliceTwoContent = implode("", $sliceTwo);
-            $c = $sliceOneContent . PHP_EOL . $content . $sliceTwoContent;
-            return file_put_contents($this->file, $c);
         } else {
-            return true;
+            if (array_key_exists($afterProperty, $classProps)) {
+                $prop = $classProps[$afterProperty];
+                $line = $prop['endLine'] + 1;
+                FileTool::insert($line, $content, $this->file);
+            } else {
+                $this->error("The property \"$afterProperty\" was not found in that class ($className).");
+            }
         }
     }
 
@@ -253,6 +411,147 @@ class ClassCooker
     public function hasMethod(string $method): bool
     {
         return ClassTool::hasMethodByFile($this->file, $method);
+    }
+
+    /**
+     *
+     * Returns an array of propertyName => informationItem about the class methods, in the order they appear in the class file.
+     *
+     * Each information item is an array with the following structure:
+     *
+     * - name: string, the method name
+     * - isPublic: bool
+     * - isProtected: bool
+     * - isPrivate: bool
+     * - isStatic: bool
+     * - isFinal: bool
+     * - isAbstract: bool
+     * - docComment: string|false, the doc comment's content if any, or false otherwise
+     * - startLine: int, the line where the method starts, this includes the docComment if any
+     * - endLine: int, the line where the method ends
+     *
+     *
+     *
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getMethodsBasicInfo(): array
+    {
+
+        $ret = [];
+        $className = $this->getClassName();
+        $r = new \ReflectionClass($className);
+        $methods = $r->getMethods();
+        foreach ($methods as $method) {
+
+
+            $startLine = $method->getStartLine();
+            $startLineDocComment = $startLine;
+            $docComment = $method->getDocComment();
+            if (false !== $docComment) {
+                $p = explode(PHP_EOL, $docComment);
+                $startLineDocComment -= count($p);
+            }
+
+            $name = $method->getName();
+//            $innerContent = $this->getMethodContent($name, false);
+
+            $ret[$name] = [
+                "name" => $name,
+                "isPublic" => $method->isPublic(),
+                "isProtected" => $method->isProtected(),
+                "isPrivate" => $method->isPrivate(),
+                "isStatic" => $method->isStatic(),
+                "isFinal" => $method->isFinal(),
+                "isAbstract" => $method->isAbstract(),
+                "docComment" => $docComment,
+                "startLine" => $startLineDocComment,
+                "endLine" => $method->getEndLine(),
+//                "innerContent" => $innerContent,
+//                "startLineMethod" => $startLine,
+            ];
+        }
+
+
+        return $ret;
+    }
+
+
+    /**
+     * Returns the number of the start line of the class.
+     *
+     * @return int
+     * @throws \Exception
+     */
+    public function getClassStartLine()
+    {
+        $r = new \ReflectionClass($this->getClassName());
+        return $r->getStartLine();
+    }
+
+    /**
+     * Returns the number of the first empty line found after the class declaration, or false if there is no empty line.
+     *
+     * Note: a line containing only white-spaces is considered empty.
+     *
+     *
+     *
+     * @return int|false
+     */
+    public function getClassFirstEmptyLine()
+    {
+        $r = new \ReflectionClass($this->getClassName());
+        $startLine = $r->getStartLine();
+
+        $lines = file($this->file);
+        $classLines = array_slice($lines, $startLine);
+        foreach ($classLines as $index => $line) {
+            $line = trim($line);
+            if ('' === $line) {
+                return $startLine + $index + 1;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Returns an array containing information related to the end of the class.
+     *
+     * The returned array has the following structure:
+     *
+     *
+     * - endLine: int, the number of the line containing the class declaration's last char
+     * - lastLineContent: string, the content of the last line being part of the class declaration
+     *
+     *
+     * @return array
+     */
+    public function getClassLastLineInfo(): array
+    {
+        $r = new \ReflectionClass($this->getClassName());
+        $endLine = $r->getEndLine();
+        $lastEmptyLine = false;
+
+
+        $lines = file($this->file);
+        $lastLineContent = $lines[$endLine - 1];
+//        $classLines = array_slice($lines, 0, $endLine);
+//        $classLines = array_reverse($classLines);
+//        foreach ($classLines as $index => $line) {
+//            $line = trim($line);
+//            if ('' === $line) {
+//                $lastEmptyLine = $endLine - $index;
+//                break;
+//            }
+//        }
+
+        return [
+            "endLine" => $endLine,
+//            "lastEmptyLine" => $lastEmptyLine,
+            "lastLineContent" => $lastLineContent,
+        ];
     }
 
 

@@ -1,9 +1,9 @@
 ClassCooker
 ===========
-2017-04-11 -> 2020-07-17
+2017-04-11 -> 2020-07-21
 
 
-A tool to add/remove/update methods in a class.
+A tool to cook your class: add/remove methods, properties, stuff like that.
 
 
 This is part of the [universe framework](https://github.com/karayabin/universe-snapshot).
@@ -21,31 +21,14 @@ Or just download it and place it where you want otherwise.
 
 
 
-Features
-============
 
-The following tools are available:
-
-- getMethodsBoundaries ( ?signatureTags )
-    - access the boundaries (i.e. startLine/endLine of a method) of all methods
-- getMethodBoundariesByName ( name )
-    - access the boundaries (i.e. startLine/endLine of a method) of a given method
-- removeMethod ( methodName )
-    - remove the method from the class file
-- getMethodContent ( methodName )
-    - get the content of a method, including the signature and wrapping curly brackets 
-- addMethod ( methodName, content )
-    - add a method, if it doesn't exist, to an existing class file 
-- updateMethodContent ( methodName, fn updator )
-    - update the inner content of a method, using a callable updator function
-- getMethods ( ?signatureTags )
-    - returns the list of methods, with an optional filter (filter on method's visibility and static property)
 
 
 
 
 Raw example
 =============
+2017-04-11
 
 
 Straight from my working file.
@@ -88,6 +71,10 @@ a(ClassCooker::create()->setFile($f)->updateMethodContent("Core_webApplicationHa
 
 History Log
 ------------------
+    
+- 1.9.0 -- 2020-07-21
+
+    - add ClassCooker->addContent method
     
 - 1.8.2 -- 2020-07-17
 
