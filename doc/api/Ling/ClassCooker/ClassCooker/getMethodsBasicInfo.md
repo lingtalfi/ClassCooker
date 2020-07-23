@@ -64,7 +64,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getMethodsBasicInfo](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L466-L505)
+See the source code for method [ClassCooker::getMethodsBasicInfo](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L470-L515)
 
 
 See Also

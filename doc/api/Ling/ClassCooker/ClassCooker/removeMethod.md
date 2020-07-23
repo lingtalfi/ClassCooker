@@ -55,7 +55,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::removeMethod](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L618-L634)
+See the source code for method [ClassCooker::removeMethod](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L643-L659)
 
 
 See Also

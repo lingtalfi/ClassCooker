@@ -58,7 +58,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::checkBoundaries](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L809-L824)
+See the source code for method [ClassCooker::checkBoundaries](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L834-L849)
 
 
 See Also

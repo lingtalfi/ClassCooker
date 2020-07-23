@@ -54,7 +54,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getMethodSignature](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L339-L350)
+See the source code for method [ClassCooker::getMethodSignature](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L341-L352)
 
 
 See Also

@@ -8,6 +8,7 @@ use Ling\Bat\ClassTool;
 use Ling\Bat\FileTool;
 use Ling\ClassCooker\Exception\ClassCookerException;
 use Ling\ClassCooker\Helper\ClassCookerHelper;
+use Ling\TokenFun\TokenFinder\ClassNameTokenFinder;
 use Ling\TokenFun\TokenFinder\Tool\TokenFinderTool;
 
 /**
@@ -86,6 +87,7 @@ class ClassCooker
             }
             $methodInfo = $methods[$method];
             $insertLine = $methodInfo['endLine'] + 1;
+
         } elseif (array_key_exists("beforeMethod", $options)) {
             $method = $options['beforeMethod'];
             $methods = $this->getMethodsBasicInfo();
@@ -437,7 +439,9 @@ class ClassCooker
      */
     public function hasMethod(string $method): bool
     {
-        return ClassTool::hasMethodByFile($this->file, $method);
+        $tokens = token_get_all(file_get_contents($this->file));
+        $methods = TokenFinderTool::getMethodsInfo($tokens);
+        return array_key_exists($method, $methods);
     }
 
     /**
@@ -466,37 +470,43 @@ class ClassCooker
     public function getMethodsBasicInfo(): array
     {
 
-        $ret = [];
-        $className = $this->getClassName();
-        $r = new \ReflectionClass($className);
-        $methods = $r->getMethods();
+        /**
+         * Note: using token based method, as reflection cannot handle dynamic changes in a file.
+         * https://stackoverflow.com/questions/63016358/php-refreshing-reflectionclass-after-dynamic-change
+         */
+
+
+        $tokens = token_get_all(file_get_contents($this->file));
+        $methods = TokenFinderTool::getMethodsInfo($tokens);
+
         foreach ($methods as $method) {
 
 
-            $startLine = $method->getStartLine();
-            $startLineDocComment = $startLine;
-            $docComment = $method->getDocComment();
-            if (false !== $docComment) {
-                $p = explode(PHP_EOL, $docComment);
-                $startLineDocComment -= count($p);
+            $docComment = false;
+            if ('docBlock' === $method['commentType']) {
+                $docComment = $method['comment'];
             }
-
-            $name = $method->getName();
-//            $innerContent = $this->getMethodContent($name, false);
+            $name = $method['name'];
+            $visibility = $method['visibility'];
+            $abstract = $method['abstract'];
+            $final = $method['final'];
+            $static = $method['static'];
+            $startLine = $method['methodStartLine'];
+            if (null !== $method['commentStartLine']) {
+                $startLine = $method['commentStartLine'];
+            }
 
             $ret[$name] = [
                 "name" => $name,
-                "isPublic" => $method->isPublic(),
-                "isProtected" => $method->isProtected(),
-                "isPrivate" => $method->isPrivate(),
-                "isStatic" => $method->isStatic(),
-                "isFinal" => $method->isFinal(),
-                "isAbstract" => $method->isAbstract(),
+                "isPublic" => ('public' === $visibility),
+                "isProtected" => ('protected' === $visibility),
+                "isPrivate" => ('private' === $visibility),
+                "isStatic" => $static,
+                "isFinal" => $final,
+                "isAbstract" => $abstract,
                 "docComment" => $docComment,
-                "startLine" => $startLineDocComment,
-                "endLine" => $method->getEndLine(),
-//                "innerContent" => $innerContent,
-//                "startLineMethod" => $startLine,
+                "startLine" => $startLine,
+                "endLine" => $method['methodEndLine'],
             ];
         }
 
@@ -513,8 +523,17 @@ class ClassCooker
      */
     public function getClassStartLine(): int
     {
-        $r = new \ReflectionClass($this->getClassName());
-        return $r->getStartLine();
+        $tokens = token_get_all(file_get_contents($this->file));
+        $classNameFinder = new ClassNameTokenFinder();
+        $matches = $classNameFinder->find($tokens);
+        $firstMatch = array_shift($matches);
+        if ($firstMatch) {
+            $index = $firstMatch[0];
+            $token = $tokens[$index];
+            return $token[2];
+        } else {
+            $this->error("Unable to find the class' first character.");
+        }
     }
 
     /**
@@ -528,9 +547,7 @@ class ClassCooker
      */
     public function getClassFirstEmptyLine()
     {
-        $r = new \ReflectionClass($this->getClassName());
-        $startLine = $r->getStartLine();
-
+        $startLine = $this->getClassStartLine();
         $lines = file($this->file);
         $classLines = array_slice($lines, $startLine);
         foreach ($classLines as $index => $line) {
@@ -546,6 +563,15 @@ class ClassCooker
     /**
      * Returns an array containing information related to the end of the class.
      *
+     * Important note, this method assumes that:
+     *
+     * - the parsed php file contains valid php code
+     * - the parsed php file contains only one class
+     *
+     * If either the above assumptions are not true, then this method won't work properly.
+     *
+     *
+     *
      * The returned array has the following structure:
      *
      *
@@ -557,26 +583,24 @@ class ClassCooker
      */
     public function getClassLastLineInfo(): array
     {
-        $r = new \ReflectionClass($this->getClassName());
-        $endLine = $r->getEndLine();
-        $lastEmptyLine = false;
+
+        $lastLineNumber = null;
+        $lastLineContent = null;
 
 
         $lines = file($this->file);
-        $lastLineContent = $lines[$endLine - 1];
-//        $classLines = array_slice($lines, 0, $endLine);
-//        $classLines = array_reverse($classLines);
-//        foreach ($classLines as $index => $line) {
-//            $line = trim($line);
-//            if ('' === $line) {
-//                $lastEmptyLine = $endLine - $index;
-//                break;
-//            }
-//        }
+        $reversedLines = array_reverse($lines);
+        foreach ($reversedLines as $k => $line) {
+            if ('}' === trim($line)) {
+                $n = count($lines);
+                $lastLineNumber = $n - $k;
+                $lastLineContent = $line;
+                break;
+            }
+        }
 
         return [
-            "endLine" => $endLine,
-//            "lastEmptyLine" => $lastEmptyLine,
+            "endLine" => $lastLineNumber,
             "lastLineContent" => $lastLineContent,
         ];
     }
@@ -590,7 +614,8 @@ class ClassCooker
      */
     public function hasProperty(string $propertyName): bool
     {
-        return ClassTool::hasProperty($this->getClassName(), $propertyName);
+        $props = TokenFinderTool::getClassPropertyBasicInfo($this->getClassName());
+        return array_key_exists($propertyName, $props);
     }
 
     /**

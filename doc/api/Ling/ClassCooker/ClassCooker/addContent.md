@@ -69,7 +69,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::addContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L77-L148)
+See the source code for method [ClassCooker::addContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L78-L150)
 
 
 See Also

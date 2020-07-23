@@ -63,7 +63,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::updateMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L652-L690)
+See the source code for method [ClassCooker::updateMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L677-L715)
 
 
 See Also

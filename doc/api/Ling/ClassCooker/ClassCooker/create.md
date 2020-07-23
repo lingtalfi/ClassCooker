@@ -46,7 +46,7 @@ Returns static.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::create](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L32-L35)
+See the source code for method [ClassCooker::create](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L33-L36)
 
 
 See Also

@@ -49,7 +49,7 @@ Returns bool.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::hasProperty](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L591-L594)
+See the source code for method [ClassCooker::hasProperty](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L615-L619)
 
 
 See Also

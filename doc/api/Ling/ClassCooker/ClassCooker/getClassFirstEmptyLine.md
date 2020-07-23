@@ -48,7 +48,7 @@ Returns int | false.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getClassFirstEmptyLine](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L529-L543)
+See the source code for method [ClassCooker::getClassFirstEmptyLine](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L548-L560)
 
 
 See Also

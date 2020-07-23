@@ -1,6 +1,6 @@
 ClassCooker
 ===========
-2017-04-11 -> 2020-07-21
+2017-04-11 -> 2020-07-23
 
 
 A tool to cook your class: add/remove methods, properties, stuff like that.
@@ -25,48 +25,24 @@ Or just download it and place it where you want otherwise.
 Summary
 ===========
 - [ClassCooker api](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker.md) (generated with [DocTools](https://github.com/lingtalfi/DocTools))
+- [About ClassCooker](#about-classcooker)
 
 
 
 
 
+About ClassCooker
+-----------
+2020-07-23
 
 
-Raw example
-=============
-2017-04-11
 
+ClassCooker methods are based on tokens rather than php built-in reflection.
 
-Straight from my working file.
+Why? Because reflection doesn't handle dynamic file changes, whereas token based methods don't have this problem.
 
-```php
-<?php
+As a result, we can add/remove methods, properties, etc... multiple times during the same script execution.
 
-use Ling\ClassCooker\ClassCooker;
-
-require_once __DIR__ . "/../boot.php";
-require_once __DIR__ . "/../init.php";
-
-
-header("content-type: text/plain");
-
-$f = '/myphp/kaminos/app/hachis.txt';
-$f = '/myphp/kaminos/app/class-core/Services/X.php';
-a(ClassCooker::create()->setFile($f)->getMethodsBoundaries());
-a(ClassCooker::create()->setFile($f)->getMethodsBoundaries(['protected', 'static']));
-a(ClassCooker::create()->setFile($f)->getMethods(['protected', 'static']));
-a(ClassCooker::create()->setFile($f)->getMethodBoundariesByName("Connexion_foo"));
-//a(ClassCooker::create()->setFile($f)->removeMethod("Connexion_foo"));
-
-$content = ClassCooker::create()->setFile($f)->getMethodContent("Connexion_foo");
-a($content);
-$newContent = str_replace('Connexion_foo', 'Connexion_shoo', $content);
-a(ClassCooker::create()->setFile($f)->addMethod("Connexion_shoo", $newContent));
-a(ClassCooker::create()->setFile($f)->updateMethodContent("Core_webApplicationHandler", function ($content) {
-    return $content .  "\t\t// oooo" . PHP_EOL;
-}));
-
-```
 
 
 
@@ -77,6 +53,10 @@ a(ClassCooker::create()->setFile($f)->updateMethodContent("Core_webApplicationHa
 
 History Log
 ------------------
+    
+- 1.10.0 -- 2020-07-23
+
+    - update ClassCooker methods to work with tokens instead of reflection
     
 - 1.9.0 -- 2020-07-21
 

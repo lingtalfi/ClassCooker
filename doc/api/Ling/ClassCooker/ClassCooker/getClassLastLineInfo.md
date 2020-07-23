@@ -23,6 +23,15 @@ public [ClassCooker::getClassLastLineInfo](https://github.com/lingtalfi/ClassCoo
 
 Returns an array containing information related to the end of the class.
 
+Important note, this method assumes that:
+
+- the parsed php file contains valid php code
+- the parsed php file contains only one class
+
+If either the above assumptions are not true, then this method won't work properly.
+
+
+
 The returned array has the following structure:
 
 
@@ -52,7 +61,7 @@ Returns array.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getClassLastLineInfo](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L558-L582)
+See the source code for method [ClassCooker::getClassLastLineInfo](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L584-L606)
 
 
 See Also
