@@ -1,6 +1,6 @@
 ClassCooker
 ===========
-2017-04-11 -> 2020-07-23
+2017-04-11 -> 2020-07-24
 
 
 A tool to cook your class: add/remove methods, properties, stuff like that.
@@ -26,6 +26,7 @@ Summary
 ===========
 - [ClassCooker api](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker.md) (generated with [DocTools](https://github.com/lingtalfi/DocTools))
 - [About ClassCooker](#about-classcooker)
+- [FryingPan conception notes](https://github.com/lingtalfi/ClassCooker/blob/master/doc/pages/frying-pan-conception-notes.md)
 
 
 
@@ -53,6 +54,10 @@ As a result, we can add/remove methods, properties, etc... multiple times during
 
 History Log
 ------------------
+    
+- 1.11.0 -- 2020-07-24
+
+    - add FryingPan class
     
 - 1.10.0 -- 2020-07-23
 

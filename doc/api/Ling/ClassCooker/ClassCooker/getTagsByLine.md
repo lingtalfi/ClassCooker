@@ -49,7 +49,7 @@ Returns array.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getTagsByLine](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L814-L823)
+See the source code for method [ClassCooker::getTagsByLine](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L876-L885)
 
 
 See Also

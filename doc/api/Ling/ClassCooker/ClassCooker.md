@@ -4,7 +4,7 @@
 
 The ClassCooker class
 ================
-2020-07-21 --> 2020-07-23
+2020-07-21 --> 2020-07-24
 
 
 
@@ -34,6 +34,7 @@ class <span class="pl-k">ClassCooker</span>  {
     - public [addMethod](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addMethod.md)($methodName, $content, ?array $options = []) : false | void
     - public [addProperty](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addProperty.md)(string $name, string $content, ?array $options = []) : void
     - public [addUseStatements](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addUseStatements.md)($useStatements) : void
+    - public [hasParent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasParent.md)() : bool
     - public [getMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodContent.md)($methodName, ?$includeWrap = true) : bool | string
     - public [getMethodSignature](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodSignature.md)($methodName) : bool | string
     - public [getClassName](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getClassName.md)() : string
@@ -81,6 +82,7 @@ Methods
 - [ClassCooker::addMethod](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addMethod.md) &ndash; Adds the given method(s) to a class if it doesn't exist.
 - [ClassCooker::addProperty](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addProperty.md) &ndash; Adds a property to the current class.
 - [ClassCooker::addUseStatements](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addUseStatements.md) &ndash; Adds the given use statement(s) to the class, if it doesn't exist.
+- [ClassCooker::hasParent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasParent.md) &ndash; Returns whether the current class has a parent.
 - [ClassCooker::getMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodContent.md) &ndash; Returns the method content, by default including the signature and the wrapping curly brackets.
 - [ClassCooker::getMethodSignature](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodSignature.md) &ndash; Returns the given method' signature, or false if the method doesn't exist.
 - [ClassCooker::getClassName](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getClassName.md) &ndash; Returns the class name of the current class (i.e.

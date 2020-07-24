@@ -51,7 +51,7 @@ Returns bool | mixed.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getMethodBoundariesByName](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L412-L419)
+See the source code for method [ClassCooker::getMethodBoundariesByName](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L473-L480)
 
 
 See Also

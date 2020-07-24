@@ -54,7 +54,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::error](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L784-L787)
+See the source code for method [ClassCooker::error](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L846-L849)
 
 
 See Also

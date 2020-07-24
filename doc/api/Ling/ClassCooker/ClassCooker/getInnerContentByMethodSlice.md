@@ -53,7 +53,7 @@ Returns string.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getInnerContentByMethodSlice](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L859-L893)
+See the source code for method [ClassCooker::getInnerContentByMethodSlice](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L921-L955)
 
 
 See Also

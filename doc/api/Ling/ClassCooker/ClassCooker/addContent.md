@@ -29,10 +29,13 @@ You can define the location where you want to add the string with the options.
 
 
 Available options are:
-- afterMethod: string, the method after which to append the string
+- firstMethod: bool=false, if true, the string will be appended as the first method
 - beforeMethod: string, the method before which to append the string
-- afterProperty: string, the property after which to append the string
+- afterMethod: string, the method after which to append the string
+
 - beforeProperty: string, the property before which to append the string
+- afterProperty: string, the property after which to append the string
+
 - classStart: bool=false, the string will be appended at the beginning of the class
 
 
@@ -69,7 +72,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::addContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L78-L150)
+See the source code for method [ClassCooker::addContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L81-L175)
 
 
 See Also

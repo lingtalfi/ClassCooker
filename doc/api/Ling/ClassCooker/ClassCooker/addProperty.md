@@ -29,12 +29,13 @@ If not, it's written before the first method of the class if any.
 If not, it's added at the beginning of the class (just after the class declaration).
 
 
-But you can define a property as a target (using the afterProperty option), in which case
-we will write the new property immediately after that target.
+But you can use options to define the property position manually.
 
 
 Available options are:
 - afterProperty: string, the name of the property to use as a target (the new property will be written after it)
+- beforeProperty: string, the name of the property to use as a target (the new property will be written before it)
+- top: bool=false, if true, the property will be appended at the top of the class. This has higher precedence than the afterProperty option.
 
 
 
@@ -75,7 +76,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::addProperty](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L215-L256)
+See the source code for method [ClassCooker::addProperty](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L241-L305)
 
 
 See Also

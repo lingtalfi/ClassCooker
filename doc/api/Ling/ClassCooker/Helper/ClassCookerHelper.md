@@ -4,7 +4,7 @@
 
 The ClassCookerHelper class
 ================
-2020-07-21 --> 2020-07-23
+2020-07-21 --> 2020-07-24
 
 
 
@@ -58,4 +58,4 @@ See the source code of [Ling\ClassCooker\Helper\ClassCookerHelper](https://githu
 
 SeeAlso
 ==============
-Previous class: [ClassCookerException](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/Exception/ClassCookerException.md)<br>
+Previous class: [UseStatementIngredient](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/FryingPan/Ingredient/UseStatementIngredient.md)<br>

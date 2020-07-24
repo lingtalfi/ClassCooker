@@ -60,10 +60,13 @@ class ClassCooker
      *
      *
      * Available options are:
-     * - afterMethod: string, the method after which to append the string
+     * - firstMethod: bool=false, if true, the string will be appended as the first method
      * - beforeMethod: string, the method before which to append the string
-     * - afterProperty: string, the property after which to append the string
+     * - afterMethod: string, the method after which to append the string
+     *
      * - beforeProperty: string, the property before which to append the string
+     * - afterProperty: string, the property after which to append the string
+     *
      * - classStart: bool=false, the string will be appended at the beginning of the class
      *
      *
@@ -79,6 +82,28 @@ class ClassCooker
     {
 
         $insertLine = null;
+
+
+        if (array_key_exists("firstMethod", $options) && true === $options['firstMethod']) {
+
+            $methods = $this->getMethodsBasicInfo();
+            if($methods){
+                $firstItem = array_shift($methods);
+                $firstMethod = $firstItem['name'];
+                $options['beforeMethod'] = $firstMethod;
+            }
+            else{
+                $properties = TokenFinderTool::getClassPropertyBasicInfo($this->getClassName());
+                if($properties){
+                    $lastItem = array_pop($properties);
+                    $lastProperty = $lastItem['varName'];
+                    $options['afterProperty'] = $lastProperty;
+                }
+            }
+        }
+
+
+
         if (array_key_exists("afterMethod", $options)) {
             $method = $options['afterMethod'];
             $methods = $this->getMethodsBasicInfo();
@@ -197,12 +222,13 @@ class ClassCooker
      * If not, it's added at the beginning of the class (just after the class declaration).
      *
      *
-     * But you can define a property as a target (using the afterProperty option), in which case
-     * we will write the new property immediately after that target.
+     * But you can use options to define the property position manually.
      *
      *
      * Available options are:
      * - afterProperty: string, the name of the property to use as a target (the new property will be written after it)
+     * - beforeProperty: string, the name of the property to use as a target (the new property will be written before it)
+     * - top: bool=false, if true, the property will be appended at the top of the class. This has higher precedence than the afterProperty option.
      *
      *
      *
@@ -225,32 +251,55 @@ class ClassCooker
         $classMethods = $this->getMethodsBasicInfo();
         $classFirstEmptyLine = $this->getClassFirstEmptyLine();
         $afterProperty = $options['afterProperty'] ?? null;
+        $beforeProperty = $options['beforeProperty'] ?? null;
+        $top = $options['top'] ?? false;
 
-        if (null === $afterProperty) {
-            if ($classProps) {
-                $lastProp = array_pop($classProps);
-                $number = $lastProp['endLine'] + 1;
-                FileTool::insert($number, $content, $this->file);
-            } elseif ($classMethods) {
-                $firstMethod = array_shift($classMethods);
-                $line = $firstMethod['startLine'];
-                FileTool::insert($line, $content, $this->file);
-            } else {
-                $line = $classFirstEmptyLine;
-                if (false === $line) {
-                    $info = $this->getClassLastLineInfo();
-                    $line = $info['endLine'] - 1;
-                }
-                FileTool::insert($line, $content, $this->file);
+        if (true === $top) {
+            $line = $classFirstEmptyLine;
+            if (false === $line) {
+                $info = $this->getClassLastLineInfo();
+                $line = $info['endLine'] - 1;
             }
-
+            FileTool::insert($line, $content, $this->file);
         } else {
-            if (array_key_exists($afterProperty, $classProps)) {
-                $prop = $classProps[$afterProperty];
-                $line = $prop['endLine'] + 1;
-                FileTool::insert($line, $content, $this->file);
+
+
+            if (null === $afterProperty && null === $beforeProperty) {
+                if ($classProps) {
+                    $lastProp = array_pop($classProps);
+                    $number = $lastProp['endLine'] + 1;
+                    FileTool::insert($number, $content, $this->file);
+                } elseif ($classMethods) {
+                    $firstMethod = array_shift($classMethods);
+                    $line = $firstMethod['startLine'];
+                    FileTool::insert($line, $content, $this->file);
+                } else {
+                    $line = $classFirstEmptyLine;
+                    if (false === $line) {
+                        $info = $this->getClassLastLineInfo();
+                        $line = $info['endLine'] - 1;
+                    }
+                    FileTool::insert($line, $content, $this->file);
+                }
+
             } else {
-                $this->error("The property \"$afterProperty\" was not found in that class ($className).");
+                if (null !== $afterProperty) {
+                    if (array_key_exists($afterProperty, $classProps)) {
+                        $prop = $classProps[$afterProperty];
+                        $line = $prop['endLine'] + 1;
+                        FileTool::insert($line, $content, $this->file);
+                    } else {
+                        $this->error("The property \"$afterProperty\" was not found in that class ($className).");
+                    }
+                } elseif (null !== $beforeProperty) {
+                    if (array_key_exists($beforeProperty, $classProps)) {
+                        $prop = $classProps[$beforeProperty];
+                        $line = $prop['startLine'];
+                        FileTool::insert($line, $content, $this->file);
+                    } else {
+                        $this->error("The property \"$beforeProperty\" was not found in that class ($className).");
+                    }
+                }
             }
         }
     }
@@ -293,15 +342,27 @@ class ClassCooker
             $lineNumber = ClassTool::getNamespaceLineNumberByFile($this->file);
             if (false !== $lineNumber) {
                 $newContent = FileTool::getContent($this->file, $lineNumber, $lineNumber);
-                $newContent .= implode(PHP_EOL, $useStatements) . PHP_EOL;
+                $newContent .= PHP_EOL . implode(PHP_EOL, $useStatements) . PHP_EOL;
                 FileTool::replace($this->file, $lineNumber, $lineNumber, $newContent);
             } else {
                 $lineNumber = ClassTool::getClassStartLineByFile($this->file);
                 $newContent = FileTool::getContent($this->file, $lineNumber, $lineNumber);
-                $newContent = implode(PHP_EOL, $useStatements) . PHP_EOL . $newContent;
+                $newContent = PHP_EOL . implode(PHP_EOL, $useStatements) . PHP_EOL . $newContent;
                 FileTool::replace($this->file, $lineNumber, $lineNumber, $newContent);
             }
         }
+    }
+
+
+    /**
+     * Returns whether the current class has a parent.
+     * @return bool
+     */
+    public function hasParent(): bool
+    {
+        $tokens = token_get_all(file_get_contents($this->file));
+        $res = TokenFinderTool::getParentClassName($tokens, false);
+        return (false !== $res);
     }
 
 
@@ -470,6 +531,7 @@ class ClassCooker
     public function getMethodsBasicInfo(): array
     {
 
+        $ret = [];
         /**
          * Note: using token based method, as reflection cannot handle dynamic changes in a file.
          * https://stackoverflow.com/questions/63016358/php-refreshing-reflectionclass-after-dynamic-change

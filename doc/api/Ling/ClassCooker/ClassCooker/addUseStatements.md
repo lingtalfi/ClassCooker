@@ -53,7 +53,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::addUseStatements](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L269-L305)
+See the source code for method [ClassCooker::addUseStatements](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L318-L354)
 
 
 See Also
@@ -61,5 +61,5 @@ See Also
 
 The [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md) class.
 
-Previous method: [addProperty](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addProperty.md)<br>Next method: [getMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodContent.md)<br>
+Previous method: [addProperty](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addProperty.md)<br>Next method: [hasParent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasParent.md)<br>
 

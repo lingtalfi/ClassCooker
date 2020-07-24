@@ -4,7 +4,7 @@
 
 The ClassCookerException class
 ================
-2020-07-21 --> 2020-07-23
+2020-07-21 --> 2020-07-24
 
 
 
@@ -54,4 +54,4 @@ See the source code of [Ling\ClassCooker\Exception\ClassCookerException](https:/
 
 SeeAlso
 ==============
-Previous class: [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md)<br>Next class: [ClassCookerHelper](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/Helper/ClassCookerHelper.md)<br>
+Previous class: [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md)<br>Next class: [FryingPan](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/FryingPan/FryingPan.md)<br>

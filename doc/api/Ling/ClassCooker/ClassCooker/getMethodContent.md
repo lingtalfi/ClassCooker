@@ -58,7 +58,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L317-L331)
+See the source code for method [ClassCooker::getMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L378-L392)
 
 
 See Also
@@ -66,5 +66,5 @@ See Also
 
 The [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md) class.
 
-Previous method: [addUseStatements](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addUseStatements.md)<br>Next method: [getMethodSignature](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodSignature.md)<br>
+Previous method: [hasParent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasParent.md)<br>Next method: [getMethodSignature](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodSignature.md)<br>
 
