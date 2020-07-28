@@ -4,7 +4,7 @@
 
 The MethodIngredient class
 ================
-2020-07-21 --> 2020-07-24
+2020-07-21 --> 2020-07-28
 
 
 
@@ -70,4 +70,4 @@ See the source code of [Ling\ClassCooker\FryingPan\Ingredient\MethodIngredient](
 
 SeeAlso
 ==============
-Previous class: [IngredientInterface](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/FryingPan/Ingredient/IngredientInterface.md)<br>Next class: [PropertyIngredient](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/FryingPan/Ingredient/PropertyIngredient.md)<br>
+Previous class: [IngredientInterface](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/FryingPan/Ingredient/IngredientInterface.md)<br>Next class: [ParentIngredient](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/FryingPan/Ingredient/ParentIngredient.md)<br>

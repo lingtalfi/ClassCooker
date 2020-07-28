@@ -46,7 +46,7 @@ Returns callable.
 
 Source Code
 ===========
-See the source code for method [FryingPan::getLogger](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L201-L212)
+See the source code for method [FryingPan::getLogger](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L202-L213)
 
 
 See Also

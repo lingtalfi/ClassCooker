@@ -4,7 +4,7 @@
 
 The FryingPan class
 ================
-2020-07-21 --> 2020-07-24
+2020-07-21 --> 2020-07-28
 
 
 
@@ -86,6 +86,7 @@ Properties
          - msgType: string, one of:
              - add,      if the ingredient will be added during the cooking
              - skip,     if the ingredient is already found in the class, and will not be added
+             - warning,  if a similar ingredient is found in the class, which prevents the addition of the new ingredient
              - error,    if the ingredient can't be added, due to an error
     
     

@@ -46,7 +46,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [FryingPan::__construct](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L81-L88)
+See the source code for method [FryingPan::__construct](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L82-L89)
 
 
 See Also

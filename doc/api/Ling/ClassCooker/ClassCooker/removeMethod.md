@@ -55,7 +55,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::removeMethod](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L705-L721)
+See the source code for method [ClassCooker::removeMethod](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L744-L760)
 
 
 See Also
@@ -63,5 +63,5 @@ See Also
 
 The [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md) class.
 
-Previous method: [hasUseStatement](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasUseStatement.md)<br>Next method: [updateMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/updateMethodContent.md)<br>
+Previous method: [hasUseStatementSymbol](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasUseStatementSymbol.md)<br>Next method: [updateMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/updateMethodContent.md)<br>
 

@@ -63,7 +63,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::updateMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L739-L777)
+See the source code for method [ClassCooker::updateMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L778-L816)
 
 
 See Also
@@ -71,5 +71,5 @@ See Also
 
 The [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md) class.
 
-Previous method: [removeMethod](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/removeMethod.md)<br>Next method: [updatePropertyComment](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/updatePropertyComment.md)<br>
+Previous method: [removeMethod](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/removeMethod.md)<br>Next method: [updateClassSignature](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/updateClassSignature.md)<br>
 

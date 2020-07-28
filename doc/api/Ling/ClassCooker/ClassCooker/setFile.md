@@ -49,7 +49,7 @@ Returns [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/a
 
 Source Code
 ===========
-See the source code for method [ClassCooker::setFile](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L44-L48)
+See the source code for method [ClassCooker::setFile](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L45-L49)
 
 
 See Also

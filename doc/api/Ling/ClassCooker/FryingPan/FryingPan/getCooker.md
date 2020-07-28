@@ -46,7 +46,7 @@ Returns [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/a
 
 Source Code
 ===========
-See the source code for method [FryingPan::getCooker](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L164-L171)
+See the source code for method [FryingPan::getCooker](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L165-L172)
 
 
 See Also

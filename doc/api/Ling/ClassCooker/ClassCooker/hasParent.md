@@ -46,7 +46,7 @@ Returns bool.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::hasParent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L361-L366)
+See the source code for method [ClassCooker::hasParent](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L500-L505)
 
 
 See Also
@@ -54,5 +54,5 @@ See Also
 
 The [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md) class.
 
-Previous method: [addUseStatements](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addUseStatements.md)<br>Next method: [getMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodContent.md)<br>
+Previous method: [hasMethod](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasMethod.md)<br>Next method: [getParentSymbol](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getParentSymbol.md)<br>
 

@@ -52,6 +52,7 @@ class FryingPan
      *      - msgType: string, one of:
      *          - add,      if the ingredient will be added during the cooking
      *          - skip,     if the ingredient is already found in the class, and will not be added
+     *          - warning,  if a similar ingredient is found in the class, which prevents the addition of the new ingredient
      *          - error,    if the ingredient can't be added, due to an error
      *
      *
@@ -149,7 +150,7 @@ class FryingPan
      */
     public function sendToLog(string $msg, string $msgType)
     {
-        if (false === in_array($msgType, ['add', 'skip', 'error'])) {
+        if (false === in_array($msgType, ['add', 'skip', 'error', 'warning'])) {
             $this->error("Unrecognized msgType: $msgType.");
         }
         call_user_func($this->getLogger(), $msg, $msgType);

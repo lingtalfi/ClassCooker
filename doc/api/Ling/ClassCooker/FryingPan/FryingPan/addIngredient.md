@@ -49,7 +49,7 @@ Returns [FryingPan](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api
 
 Source Code
 ===========
-See the source code for method [FryingPan::addIngredient](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L119-L124)
+See the source code for method [FryingPan::addIngredient](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L120-L125)
 
 
 See Also

@@ -72,7 +72,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::updatePropertyComment](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L806-L834)
+See the source code for method [ClassCooker::updatePropertyComment](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L929-L957)
 
 
 See Also
@@ -80,5 +80,5 @@ See Also
 
 The [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md) class.
 
-Previous method: [updateMethodContent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/updateMethodContent.md)<br>Next method: [error](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/error.md)<br>
+Previous method: [addParentClass](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/addParentClass.md)<br>Next method: [error](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/error.md)<br>
 

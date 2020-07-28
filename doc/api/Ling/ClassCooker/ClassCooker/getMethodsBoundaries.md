@@ -54,7 +54,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::getMethodsBoundaries](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L489-L492)
+See the source code for method [ClassCooker::getMethodsBoundaries](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L476-L479)
 
 
 See Also

@@ -74,7 +74,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ClassCooker::addMethod](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L201-L212)
+See the source code for method [ClassCooker::addMethod](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L200-L211)
 
 
 See Also

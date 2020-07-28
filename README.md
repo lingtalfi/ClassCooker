@@ -1,6 +1,6 @@
 ClassCooker
 ===========
-2017-04-11 -> 2020-07-24
+2017-04-11 -> 2020-07-28
 
 
 A tool to cook your class: add/remove methods, properties, stuff like that.
@@ -54,6 +54,10 @@ As a result, we can add/remove methods, properties, etc... multiple times during
 
 History Log
 ------------------
+    
+- 1.12.0 -- 2020-07-28
+
+    - add ClassCooker->updateClassSignature and addParentClass methods
     
 - 1.11.0 -- 2020-07-24
 

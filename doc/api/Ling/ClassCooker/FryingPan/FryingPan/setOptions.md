@@ -49,7 +49,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [FryingPan::setOptions](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L106-L110)
+See the source code for method [FryingPan::setOptions](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/FryingPan.php#L107-L111)
 
 
 See Also

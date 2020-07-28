@@ -51,7 +51,7 @@ Returns bool.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::hasUseStatement](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L692-L695)
+See the source code for method [ClassCooker::hasUseStatement](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L706-L709)
 
 
 See Also
@@ -59,5 +59,5 @@ See Also
 
 The [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md) class.
 
-Previous method: [hasProperty](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasProperty.md)<br>Next method: [removeMethod](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/removeMethod.md)<br>
+Previous method: [hasProperty](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasProperty.md)<br>Next method: [hasUseStatementSymbol](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasUseStatementSymbol.md)<br>
 

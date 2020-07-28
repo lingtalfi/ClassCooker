@@ -49,7 +49,7 @@ Returns bool.
 
 Source Code
 ===========
-See the source code for method [ClassCooker::hasMethod](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L501-L506)
+See the source code for method [ClassCooker::hasMethod](https://github.com/lingtalfi/ClassCooker/blob/master/ClassCooker.php#L488-L493)
 
 
 See Also
@@ -57,5 +57,5 @@ See Also
 
 The [ClassCooker](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker.md) class.
 
-Previous method: [getMethodsBoundaries](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodsBoundaries.md)<br>Next method: [getMethodsBasicInfo](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodsBasicInfo.md)<br>
+Previous method: [getMethodsBoundaries](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/getMethodsBoundaries.md)<br>Next method: [hasParent](https://github.com/lingtalfi/ClassCooker/blob/master/doc/api/Ling/ClassCooker/ClassCooker/hasParent.md)<br>
 

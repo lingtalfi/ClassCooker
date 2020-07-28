@@ -10,6 +10,7 @@ use Ling\ClassCooker\Exception\ClassCookerException;
 use Ling\ClassCooker\Helper\ClassCookerHelper;
 use Ling\TokenFun\TokenFinder\ClassNameTokenFinder;
 use Ling\TokenFun\TokenFinder\Tool\TokenFinderTool;
+use Ling\TokenFun\Tool\TokenTool;
 
 /**
  * The ClassCooker class.
@@ -87,21 +88,19 @@ class ClassCooker
         if (array_key_exists("firstMethod", $options) && true === $options['firstMethod']) {
 
             $methods = $this->getMethodsBasicInfo();
-            if($methods){
+            if ($methods) {
                 $firstItem = array_shift($methods);
                 $firstMethod = $firstItem['name'];
                 $options['beforeMethod'] = $firstMethod;
-            }
-            else{
+            } else {
                 $properties = TokenFinderTool::getClassPropertyBasicInfo($this->getClassName());
-                if($properties){
+                if ($properties) {
                     $lastItem = array_pop($properties);
                     $lastProperty = $lastItem['varName'];
                     $options['afterProperty'] = $lastProperty;
                 }
             }
         }
-
 
 
         if (array_key_exists("afterMethod", $options)) {
@@ -355,18 +354,6 @@ class ClassCooker
 
 
     /**
-     * Returns whether the current class has a parent.
-     * @return bool
-     */
-    public function hasParent(): bool
-    {
-        $tokens = token_get_all(file_get_contents($this->file));
-        $res = TokenFinderTool::getParentClassName($tokens, false);
-        return (false !== $res);
-    }
-
-
-    /**
      * Returns the method content, by default including the signature and the wrapping curly brackets.
      *
      *
@@ -504,6 +491,33 @@ class ClassCooker
         $methods = TokenFinderTool::getMethodsInfo($tokens);
         return array_key_exists($method, $methods);
     }
+
+
+    /**
+     * Returns whether the current class has a parent.
+     * @return bool
+     */
+    public function hasParent(): bool
+    {
+        $tokens = token_get_all(file_get_contents($this->file));
+        $res = TokenFinderTool::getParentClassName($tokens, false);
+        return (false !== $res);
+    }
+
+
+    /**
+     * Returns the parent symbol if any, or false otherwise.
+     *
+     * The parent symbol is the word written after the "extends" keyword.
+     *
+     * @return false|string
+     */
+    public function getParentSymbol()
+    {
+        $tokens = token_get_all(file_get_contents($this->file));
+        return TokenFinderTool::getParentClassName($tokens, false);
+    }
+
 
     /**
      *
@@ -694,6 +708,31 @@ class ClassCooker
         return ClassTool::hasUseStatementByFile($this->file, $useStatementClass);
     }
 
+
+    /**
+     * Returns whether the given symbol is defined in the use statements.
+     *
+     * A symbol is either:
+     * - the alias of an use statement
+     * - the last component of the use statement
+     *
+     *
+     * @param string $symbol
+     * @return bool
+     */
+    public function hasUseStatementSymbol(string $symbol): bool
+    {
+        $useStatements = ClassTool::getUseStatements($this->getClassName(), true);
+        foreach ($useStatements as $useStatement) {
+            $p = explode('\\', $useStatement);
+            $useStatementSymbol = array_pop($p);
+            if ($symbol === $useStatementSymbol) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Remove the given method from the class,
      * or does nothing and returns false if the method was not found.
@@ -774,6 +813,90 @@ class ClassCooker
 
         }
         return false;
+    }
+
+    /**
+     * Updates the class signature using the given callable.
+     *
+     * The given callable has the following signature:
+     *
+     * - fn ( string oldSignature ): string
+     *
+     *
+     * It returns the new signature.
+     *
+     *
+     * @param callable $fn
+     */
+    public function updateClassSignature(callable $fn)
+    {
+
+        /**
+         * Note to myself: this method heuristic is not error proof:
+         * it will fail if the class signature contains comment which contains some keywords like extends for instance.
+         *
+         * Alternatively, we could use a purely token based method, just
+         * loop through the tokens directly, and insert your tokens directly into the tokens array, and use the
+         * TokenTool::tokensToString to put it back to a string.
+         * I didn't do it here because the current implementation below was faster, and I was a bit lazy, and I thought
+         * that this would work in most cases, but if it fails, well, you have to implement a more robust heuristic.
+         */
+        $tokens = token_get_all(file_get_contents($this->file));
+        $info = TokenFinderTool::getClassSignatureInfo($tokens);
+
+
+        /**
+         * Since we use line based replacement, we won't use the signature provided
+         * by the TokenFinderTool, we will extract our own signature strings based
+         * on line numbers instead.
+         */
+        list($signature, $startLine, $endLine) = $info;
+        $signature = trim($signature);
+        $newSignature = call_user_func($fn, $signature);
+
+        $content = FileTool::getContent($this->file, $startLine, $endLine);
+        $newContent = str_replace($signature, $newSignature, $content);
+        FileTool::replace($this->file, $startLine, $endLine, $newContent);
+    }
+
+
+    /**
+     * Adds a parent class to the current service class.
+     * Throws an exception if the class already has a parent.
+     *
+     * @param string $parentName
+     * @throws \Exception
+     */
+    public function addParentClass(string $parentName)
+    {
+        $this->updateClassSignature(function ($signatureContent) use ($parentName) {
+            $phpSig = '<?php ' . PHP_EOL;
+            $phpSig .= $signatureContent;
+            $tokens = token_get_all($phpSig);
+            if (true === TokenTool::matchAny(T_EXTENDS, $tokens)) {
+                $className = $this->getClassName();
+                $this->error("Will not add parent to class \"$className\" because it already has one.");
+            }
+
+            $part1 = null;
+            $part2 = null; // implements part
+            $part3 = null;
+
+            $p = preg_split('!(\s+implements\s+)!im', $signatureContent, 2, \PREG_SPLIT_DELIM_CAPTURE);
+            if (3 === count($p)) {
+                list($part1, $part2, $part3) = $p;
+            } else {
+                $part1 = array_shift($p);
+            }
+
+            $signature = $part1 . " extends $parentName";
+            if (null !== $part2) {
+                $signature .= $part2 . $part3;
+            }
+
+            $signature = trim($signature); // not mandatory, but my personal preference
+            return $signature;
+        });
     }
 
 
