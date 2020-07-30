@@ -46,7 +46,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [ParentIngredient::execute](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/Ingredient/ParentIngredient.php#L29-L52)
+See the source code for method [ParentIngredient::execute](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/Ingredient/ParentIngredient.php#L29-L65)
 
 
 See Also

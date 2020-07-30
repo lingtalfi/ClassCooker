@@ -33,12 +33,16 @@ class ParentIngredient extends BaseIngredient
 
 
         $classParent = $cooker->getParentSymbol();
-        if (false !== $classParent && $symbol !== $classParent) {
-            $this->fryingPan->sendToLog("The \"$symbol\" class was not added (the class already has a parent). Consider adding the parent manually.", 'warning');
+        if (false !== $classParent) {
+            if ($symbol !== $classParent) {
+                $this->fryingPan->sendToLog("The \"$symbol\" class was not added (the class already has a parent). Consider examining the file and adding the parent manually.", 'warning');
+            } else {
+                $this->fryingPan->sendToLog("The \"$symbol\" class is already the parent class of the service.", 'skip');
+            }
         } else {
 
             /**
-             * Add this before, otherwise the php code won't be valid
+             * Add this before adding the parent class, otherwise the php code won't be valid
              */
             if (array_key_exists('useStatement', $options)) {
                 $useStatementClass = $options['useStatement'];
@@ -46,7 +50,16 @@ class ParentIngredient extends BaseIngredient
                 $ingredient->setFryingPan($this->fryingPan);
                 $ingredient->setValue($useStatementClass)->execute();
             }
+
+
             $cooker->addParentClass($symbol);
+
+            $cooker->updateMethodContent("__construct", function (string $content) {
+                if (false === strpos($content, 'parent::__construct();')) {
+                    $content = str_repeat(' ', 8) . 'parent::__construct();' . PHP_EOL . $content;
+                }
+                return $content;
+            });
 
         }
     }
