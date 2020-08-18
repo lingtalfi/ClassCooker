@@ -46,7 +46,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [MethodIngredient::execute](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/Ingredient/MethodIngredient.php#L26-L73)
+See the source code for method [MethodIngredient::execute](https://github.com/lingtalfi/ClassCooker/blob/master/FryingPan/Ingredient/MethodIngredient.php#L26-L77)
 
 
 See Also

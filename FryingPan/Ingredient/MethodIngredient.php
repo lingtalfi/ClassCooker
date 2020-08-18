@@ -53,6 +53,10 @@ class MethodIngredient extends BaseIngredient
                 if (true === $hasMethod) {
                     $sAsComment = ' as comment';
                     $template = CommentTool::comment($template) . PHP_EOL; // the php_eol here is crucial
+
+                    $file = $this->fryingPan->getFile();
+
+
                 }
 
 
