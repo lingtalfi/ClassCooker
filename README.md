@@ -55,6 +55,10 @@ As a result, we can add/remove methods, properties, etc... multiple times during
 History Log
 ------------------
     
+- 1.16.0 -- 2020-08-18
+
+    - update MethodIngredient->execute, now accepts the addAsComment option
+    
 - 1.15.0 -- 2020-08-18
 
     - update FryingPan, add getFile method
