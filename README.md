@@ -55,6 +55,10 @@ As a result, we can add/remove methods, properties, etc... multiple times during
 History Log
 ------------------
 
+- 1.16.2 -- 2020-12-08
+
+    - Fix lpi-deps not using natsort.
+
 - 1.16.1 -- 2020-12-04
 
     - Add lpi-deps.byml file
