@@ -1,6 +1,6 @@
 ClassCooker
 ===========
-2017-04-11 -> 2021-06-03
+2017-04-11 -> 2021-06-28
 
 
 A tool to cook your class: add/remove methods, properties, stuff like that.
@@ -60,6 +60,10 @@ As a result, we can add/remove methods, properties, etc... multiple times during
 History Log
 ------------------
 
+- 1.16.6 -- 2021-06-28
+
+    - fix api wrong reference to Ling.Light_Logger
+  
 - 1.16.5 -- 2021-06-03
 
     - removed az left overs
